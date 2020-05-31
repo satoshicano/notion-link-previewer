@@ -1,9 +1,9 @@
 
 import { createEventAdapter, errorCodes } from '@slack/events-api';
 import { WebClient, MessageAttachment } from '@slack/web-api';
-import { keyBy, omit, mapValues, last } from 'lodash';
+import { keyBy, omit, mapValues } from 'lodash';
 
-import { PageDTO } from "notion-api-js/dist/lib/types";
+import { Attributes } from "notion-api-js/dist/lib/types";
 import { getPageInfo } from './notion';
 import { AddressInfo } from 'net';
 
@@ -12,12 +12,12 @@ const { SLACK_SIGNING_SECRET, SLACK_CLIENT_TOKEN } = process.env
 const slackEvents = createEventAdapter(SLACK_SIGNING_SECRET!);
 const slack = new WebClient(SLACK_CLIENT_TOKEN!);
 
-function createMessageAttachMentFromPage(page: PageDTO, url: string) {
-  const { title, teaser, cover } = page.Attributes!;
+function createMessageAttachMentFromPage(page: Attributes, url: string) {
+  const { title, teaser, cover } = page;
   const attachment: MessageAttachment = {
     fallback: title + (teaser ? `: ${teaser}` : ''),
     color: '#87CEFA',
-    title: title!,
+    title: title,
     title_link: url,
     image_url: cover ? cover : ""
   };
@@ -40,7 +40,8 @@ slackEvents.on('link_shared', (event) => {
   Promise.all(event.links.map(async ({ url }: { url: string }) => {
     const pageUrl = new URL(url);
     const page = await getPageInfo(pageUrl);
-    return createMessageAttachMentFromPage((page!), url);
+    console.log(page)
+    return createMessageAttachMentFromPage(page!, url);
   }))
     .then(attachments => keyBy(attachments, 'url'))
     .then(unfurls => mapValues(unfurls, attachment => omit(attachment, 'url')))
