@@ -41,12 +41,14 @@ slackEvents.on('link_shared', (event) => {
   Promise.all(event.links.map(async ({ url }: { url: string }) => {
     const pageUrl = new URL(url);
     const page = await getPageInfo(pageUrl);
+    if(page.title === "") {
+      throw new Error("this block type is not page");
+    }
     return createMessageAttachMentFromPage(page!, url);
   }))
     .then(attachments => keyBy(attachments, 'url'))
     .then(unfurls => mapValues(unfurls, attachment => omit(attachment, 'url')))
     .then(unfurls => {
-      console.log(unfurls)
       slack.chat.unfurl({
         ts: event.message_ts,
         channel: event.channel,
