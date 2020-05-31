@@ -1,0 +1,21 @@
+{
+  "name": "notion-link-previewer",
+  "description": "Slack App that to unfurl url of notion.so",
+  "keywords": [
+    "notion",
+    "slack"
+  ],
+  "repository": "https://github.com/satoshicano/notion-link-previewer",
+  "env": {
+    "SLACK_CLIENT_TOKEN": {
+      "description": "ex) xoxp-XXXXXXXX-XXXXXXXX-XXXXX"
+    },
+    "SLACK_SIGNING_SECRET": {
+      "description": "slack signing secret"
+    },
+    "NOTION_TOKEN": {
+      "description": "Token V2"
+    }
+  },
+  "addons": []
+}
