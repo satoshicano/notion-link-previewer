@@ -14,12 +14,13 @@ const slack = new WebClient(SLACK_CLIENT_TOKEN!);
 
 function createMessageAttachMentFromPage(page: Attributes, url: string) {
   const { title, teaser, cover } = page;
-  const attachment: MessageAttachment = {
+  const attachment = {
     fallback: title + (teaser ? `: ${teaser}` : ''),
     color: '#87CEFA',
     title: title,
     title_link: url,
-    image_url: cover ? cover : ""
+    image_url: cover ? cover : "",
+    url
   };
 
   const fields = [];
@@ -40,16 +41,18 @@ slackEvents.on('link_shared', (event) => {
   Promise.all(event.links.map(async ({ url }: { url: string }) => {
     const pageUrl = new URL(url);
     const page = await getPageInfo(pageUrl);
-    console.log(page)
     return createMessageAttachMentFromPage(page!, url);
   }))
     .then(attachments => keyBy(attachments, 'url'))
     .then(unfurls => mapValues(unfurls, attachment => omit(attachment, 'url')))
-    .then(unfurls => slack.chat.unfurl({
-      ts: event.message_ts,
-      channel: event.channel,
-      unfurls
-    }))
+    .then(unfurls => {
+      console.log(unfurls)
+      slack.chat.unfurl({
+        ts: event.message_ts,
+        channel: event.channel,
+        unfurls
+      });
+    })
     .catch(console.error);
 });
 
