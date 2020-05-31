@@ -61,7 +61,7 @@ slackEvents.on('error', (error) => {
 
 
 (async () => {
-  await slackEvents.start(3000);
+  await slackEvents.start(Number(process.env.PORT) || 3000);
   console.log("Listening for events");
 })();
 
