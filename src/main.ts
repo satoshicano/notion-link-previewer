@@ -5,6 +5,7 @@ import { keyBy, omit, mapValues, last } from 'lodash';
 
 import { PageDTO } from "notion-api-js/dist/lib/types";
 import { getPageInfo } from './notion';
+import { AddressInfo } from 'net';
 
 const { SLACK_SIGNING_SECRET, SLACK_CLIENT_TOKEN } = process.env
 
@@ -61,7 +62,8 @@ slackEvents.on('error', (error) => {
 
 
 (async () => {
-  await slackEvents.start(Number(process.env.PORT) || 3000);
-  console.log("Listening for events");
+  const server = await slackEvents.start(Number(process.env.PORT) || 3000);
+  const addressInfo: AddressInfo = server.address()
+  console.log(`Listening for events in port: ${addressInfo.port}`);
 })();
 
