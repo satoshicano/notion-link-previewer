@@ -1,10 +1,10 @@
 
 import { createEventAdapter, errorCodes } from '@slack/events-api';
-import { WebClient, MessageAttachment } from '@slack/web-api';
+import { WebClient } from '@slack/web-api';
 import { keyBy, omit, mapValues } from 'lodash';
 
 import { Attributes } from "notion-api-js/dist/lib/types";
-import { getPageInfo } from './notion';
+import { getPageInfo } from './notion/api';
 import { AddressInfo } from 'net';
 
 const { SLACK_SIGNING_SECRET, SLACK_CLIENT_TOKEN } = process.env
