@@ -25,3 +25,7 @@ export function toDashId(nonDashId: string) {
     insertStr("-", 23)
   );
 }
+
+export function removeHash(urlStr: string) {
+  return urlStr.includes("#") ? urlStr.split("#")[0] : urlStr;
+}

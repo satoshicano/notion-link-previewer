@@ -3,7 +3,7 @@ import Notion from "notion-api-js";
 
 import INotion from "notion-api-js/dist/notion"
 import { Attributes } from "notion-api-js/dist/lib/types";
-import { pipe, toLastPath, toNonDashId, toDashId } from "./utils";
+import { pipe, toLastPath, toNonDashId, toDashId, removeHash } from "./utils";
 
 const { NOTION_TOKEN } = process.env
 const notion: INotion = new Notion({ token: NOTION_TOKEN!, options: {} });
@@ -13,7 +13,8 @@ function getPageIdByURL(url: URL): string {
     () => url,
     toLastPath,
     toNonDashId,
-    toDashId
+    toDashId,
+    removeHash
   );
 }
 export async function getPageInfo(pageUrl: URL): Promise<Attributes | undefined> {

@@ -41,7 +41,7 @@ slackEvents.on('link_shared', (event) => {
   Promise.all(event.links.map(async ({ url }: { url: string }) => {
     const pageUrl = new URL(url);
     const page = await getPageInfo(pageUrl);
-    if(page.title === "") {
+    if (page.title === "") {
       throw new Error("this block type is not page");
     }
     return createMessageAttachMentFromPage(page!, url);
