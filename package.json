@@ -16,7 +16,7 @@
   "dependencies": {
     "@slack/events-api": "^2.3.4",
     "@slack/web-api": "^5.11.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "notion-api-js": "^2.3.0"
   },
   "devDependencies": {
